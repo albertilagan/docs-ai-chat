@@ -49,7 +49,7 @@ brews:
     homepage: "https://github.com/albertilagan/docs-ai-chat"
     description: "Chat with documentation and OpenAPI specifications using AI"
 
-    folder: Formula
+    directory: Formula
 
     install: |
       bin.install "daic"
