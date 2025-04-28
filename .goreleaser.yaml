@@ -37,7 +37,7 @@ archives:
 
 brews:
   - name: daic
-    tap:
+    repository:
       owner: albertilagan
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
