@@ -35,6 +35,32 @@ archives:
       - goos: windows
         formats: [zip]
 
+brews:
+  - name: daic
+    tap:
+      owner: albertilagan
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+
+    commit_author:
+      name: goreleaserbot
+      email: goreleaser@albertilagan.dev
+
+    homepage: "https://github.com/albertilagan/docs-ai-chat"
+    description: "Chat with documentation and OpenAPI specifications using AI"
+
+    folder: Formula
+
+    install: |
+      bin.install "daic"
+
+    test: |
+      system "#{bin}/daic --version"
+
+    caveats: |
+      Before using daic, set your OpenRouter API key:
+        export OPENROUTER_API_KEY="your-api-key"
+
 changelog:
   sort: asc
   filters:

@@ -2,6 +2,18 @@
 
 A command-line interface for interacting with OpenAPI specifications using OpenRouter.
 
+## Installation
+
+### Using Homebrew (macOS and Linux)
+
+```bash
+# Add the tap
+brew tap albertilagan/tap
+
+# Install the application
+brew install daic
+```
+
 ## Usage
 
 ```bash
