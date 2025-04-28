@@ -1,33 +1,34 @@
 package prompt
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/albertilagan/docs-ai-chat/pkg/llm"
 	"github.com/albertilagan/docs-ai-chat/pkg/openapi"
 )
 
-// BuildOpenAPIPrompt creates a system prompt for the LLM with OpenAPI context
-func BuildOpenAPIPrompt(apiSpec *openapi.APISpec, userQuestion string) []llm.ChatMessage {
-	// Create a compact version of the spec for context
-	specSummary, _ := json.Marshal(map[string]interface{}{
-		"info":        apiSpec.Spec.Info,
-		"paths":       apiSpec.Spec.Paths,
-		"definitions": apiSpec.Spec.Definitions,
-		"parameters":  apiSpec.Spec.Parameters,
-		"responses":   apiSpec.Spec.Responses,
-	})
+func BuildOpenAPIPrompt(apiSpec *openapi.APISpec, conversations []llm.ChatMessage) []llm.ChatMessage {
+	// The first message should always be the system prompt
+	systemPrompt := conversations[0].Content
 
-	systemPrompt := fmt.Sprintf(`You are an API documentation assistant. Answer questions about this OpenAPI specification:
+	// Add API context to the system prompt
+	systemPromptWithContext := fmt.Sprintf(`%s
+
+Here is the OpenAPI specification for this API:
 
 %s
 
-Be concise but thorough. If asked about endpoints, include the path, method, parameters, 
-request body structure, and response format. If the information isn't in the spec, say so.`,
-		string(specSummary))
+Answer questions based on this specification. Be specific about endpoints, parameters, request formats, and response structures.`,
+		systemPrompt,
+		string(apiSpec.SpecJSON))
 
-	return []llm.ChatMessage{
-		{Role: "system", Content: systemPrompt},
-		{Role: "user", Content: userQuestion},
+	// Create a new array with the enhanced system prompt and user's conversation
+	result := make([]llm.ChatMessage, len(conversations))
+	result[0] = llm.ChatMessage{Role: "system", Content: systemPromptWithContext}
+
+	// Copy the rest of the conversation
+	for i := 1; i < len(conversations); i++ {
+		result[i] = conversations[i]
 	}
+
+	return result
 }

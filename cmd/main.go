@@ -13,7 +13,7 @@ import (
 func main() {
 	// Define command-line flags
 	specFile := flag.String("spec", "", "Path to OpenAPI JSON specification file")
-	model := flag.String("model", "anthropic/claude-3-sonnet", "OpenRouter model to use")
+	model := flag.String("model", "google/gemini-2.5-flash-preview", "OpenRouter model to use")
 	flag.Parse()
 
 	if *specFile == "" {
